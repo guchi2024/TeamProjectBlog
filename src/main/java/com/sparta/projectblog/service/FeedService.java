@@ -1,6 +1,7 @@
 package com.sparta.projectblog.service;
 
 import com.sparta.projectblog.dto.FeedCreateRequestDto;
+import com.sparta.projectblog.dto.FeedUpdateRequestDto;
 import com.sparta.projectblog.entity.Feed;
 import com.sparta.projectblog.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,23 @@ public class FeedService {
                 .createdAt(LocalDateTime.now())
                 .build();
         feedRepository.save(feed);
+    }
+
+    //Update
+    public void updateFeed(Long id, FeedUpdateRequestDto requestDto) {
+        Feed feed = feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed not found"));
+        feed = Feed.builder()
+                .id(feed.getId())
+                .userId(feed.getUserId())
+                .content(requestDto.getContent())
+                .createdAt(feed.getCreatedAt())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        feedRepository.save(feed);
+    }
+    //Delete
+    public void deleteFeed(Long id) {
+        Feed feed = feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed not found"));
+        feedRepository.delete(feed);
     }
 }
