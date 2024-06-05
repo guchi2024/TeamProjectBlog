@@ -6,9 +6,8 @@ public class FeedUpdateRequestDto {
     private String content;
     private LocalDateTime updatedAt;
 
-    public FeedUpdateRequestDto(String content, LocalDateTime updatedAt) {
+    public FeedUpdateRequestDto(String content) {
         this.content = content;
-        this.updatedAt = updatedAt;
     }
     public String getContent() {
         return content;
