@@ -26,7 +26,6 @@ public class FeedService {
     }
 
     public Feed readFeed(Long id) {
-        // Optional 공부하기
         return feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed Not found"));
     }
 
