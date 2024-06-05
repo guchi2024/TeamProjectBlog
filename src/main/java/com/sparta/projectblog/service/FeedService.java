@@ -33,13 +33,7 @@ public class FeedService {
     //Update
     public void updateFeed(Long id, FeedUpdateRequestDto requestDto) {
         Feed feed = feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed not found"));
-        feed = Feed.builder()
-                .id(feed.getId())
-                .userId(feed.getUserId())
-                .content(requestDto.getContent())
-                .createdAt(feed.getCreatedAt())
-                .updatedAt(LocalDateTime.now())
-                .build();
+        feed.updatedFeed(requestDto.getContent(), requestDto.getUpdatedAt());
         feedRepository.save(feed);
     }
 

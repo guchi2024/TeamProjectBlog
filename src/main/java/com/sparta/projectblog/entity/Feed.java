@@ -31,4 +31,8 @@ public class Feed {
 
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+    public void updatedFeed(String content, LocalDateTime updatedAt) {
+        this.content = content;
+        this.updatedAt = updatedAt;
+    }
 }
