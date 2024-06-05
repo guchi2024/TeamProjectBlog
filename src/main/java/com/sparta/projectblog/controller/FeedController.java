@@ -2,9 +2,9 @@ package com.sparta.projectblog.controller;
 
 import com.sparta.projectblog.dto.FeedCreateRequestDto;
 import com.sparta.projectblog.dto.FeedUpdateRequestDto;
+import com.sparta.projectblog.entity.Feed;
 import com.sparta.projectblog.service.FeedService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +22,14 @@ public class FeedController {
         try {
             feedService.createFeed(requestDto);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public Feed feeds(@PathVariable Long id) {
+        return feedService.readFeed(id);
     }
 
     @PatchMapping("/{id}")
