@@ -13,11 +13,6 @@ public class FeedUpdateRequestDto {
         return content;
     }
 
-    public LocalDateTime getUpdatedAt(){
-        return updatedAt;
-    }
-
-
 }
 
 
