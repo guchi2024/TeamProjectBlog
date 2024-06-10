@@ -1,5 +1,7 @@
 package com.sparta.projectblog.service;
 
+import com.sparta.projectblog.dto.UserResponse;
+import com.sparta.projectblog.dto.UserUpdateRequest;
 import com.sparta.projectblog.dto.SignupRequestDto;
 import com.sparta.projectblog.dto.UserRequestDto;
 import com.sparta.projectblog.entity.User;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
 import java.util.Optional;
 
 @Service
@@ -91,5 +92,25 @@ public class UserService {
             }
         }
         return "정상 탈퇴 처리되었습니다.";
+    }
+
+    public UserResponse findByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException());
+        return new UserResponse(user.getUserId(), user.getNickname(), user.getEmail(), user.getContent());
+    }
+
+
+    public void updateprofile(Long id, UserUpdateRequest updateResponse) {
+        //1.조회
+        User user = userRepository.findById(id).orElseThrow(()->new RuntimeException());
+        //2.암호화
+        if (!updateResponse.getPassword().matches("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()\\-_=+\\\\|\\[\\]{};:'\",.<>\\/?]).{10,}$")) {
+            throw new IllegalArgumentException("비밀번호는 최소 10자 이상, 대소문자 포함 영문 + 숫자 + 특수문자를 최소 1글자씩 포함해야 합니다.");
+        }
+        String hashedPassword = passwordEncoder.encode(updateResponse.getPassword());
+        //3.수정
+        user.updateProfile(updateResponse.getNickname(),hashedPassword,updateResponse.getEmail(),updateResponse.getContent());
+        userRepository.save(user);
+
     }
 }
