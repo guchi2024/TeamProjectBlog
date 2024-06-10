@@ -19,7 +19,7 @@ public class FeedService {
     // Create
     public void createFeed(FeedCreateRequestDto requestDto) {
         Feed feed = Feed.builder()
-                .userId(1L)
+                .userId(requestDto.getUserId())
                 .content(requestDto.getContent())
                 .createdAt(LocalDateTime.now())
                 .build();

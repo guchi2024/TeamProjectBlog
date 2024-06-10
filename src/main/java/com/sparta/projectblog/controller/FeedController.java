@@ -26,7 +26,7 @@ public class FeedController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
@@ -36,8 +36,8 @@ public class FeedController {
     }
 
     @GetMapping("/{id}")
-    public Feed feeds(@PathVariable Long id) {
-        return feedService.readFeed(id);
+    public ResponseEntity<Feed> feeds(@PathVariable Long id) {
+        return ResponseEntity.ok().body(feedService.readFeed(id));
     }
 
     @PatchMapping("/{id}")
