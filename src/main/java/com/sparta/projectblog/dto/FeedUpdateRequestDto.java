@@ -1,9 +1,10 @@
 package com.sparta.projectblog.dto;
 
+import java.time.LocalDateTime;
+
 public class FeedUpdateRequestDto {
     private String content;
-
-    public FeedUpdateRequestDto() {}
+    private LocalDateTime updatedAt;
 
     public FeedUpdateRequestDto(String content) {
         this.content = content;
@@ -12,7 +13,4 @@ public class FeedUpdateRequestDto {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

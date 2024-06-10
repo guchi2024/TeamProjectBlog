@@ -5,10 +5,11 @@ import com.sparta.projectblog.dto.FeedUpdateRequestDto;
 import com.sparta.projectblog.entity.Feed;
 import com.sparta.projectblog.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,12 @@ public class FeedService {
         feedRepository.save(feed);
     }
 
+    // All Read
+    public List<Feed> allFeed() {
+        List<Feed> feeds = feedRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+        return feeds;
+    }
+
     public Feed readFeed(Long id) {
         // Optional 공부하기
         return feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed Not found"));
@@ -33,16 +40,9 @@ public class FeedService {
     //Update
     public void updateFeed(Long id, FeedUpdateRequestDto requestDto) {
         Feed feed = feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed not found"));
-        feed = Feed.builder()
-                .id(feed.getId())
-                .userId(feed.getUserId())
-                .content(requestDto.getContent())
-                .createdAt(feed.getCreatedAt())
-                .updatedAt(LocalDateTime.now())
-                .build();
+        feed.updatedFeed(requestDto.getContent());
         feedRepository.save(feed);
     }
-
     //Delete
     public void deleteFeed(Long id) {
         Feed feed = feedRepository.findById(id).orElseThrow(() -> new RuntimeException("Feed not found"));
