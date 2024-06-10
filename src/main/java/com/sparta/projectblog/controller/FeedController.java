@@ -19,6 +19,7 @@ public class FeedController {
 
     @PostMapping("")
     public ResponseEntity<Void> feeds(@RequestBody FeedCreateRequestDto requestDto) {
+       
         try {
             feedService.createFeed(requestDto);
             return ResponseEntity.ok().build();
@@ -34,6 +35,7 @@ public class FeedController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateFeed(@PathVariable Long id, @RequestBody FeedUpdateRequestDto requestDto) {
+
         try {
             feedService.updateFeed(id, requestDto);
             return ResponseEntity.ok().build();
@@ -44,11 +46,12 @@ public class FeedController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFeed(@PathVariable Long id) {
+
         try {
             feedService.deleteFeed(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }
