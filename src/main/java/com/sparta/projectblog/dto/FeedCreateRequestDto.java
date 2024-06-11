@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public class FeedCreateRequestDto {
     private String content;
+    private Long userId;
 }

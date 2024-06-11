@@ -19,13 +19,13 @@ public class User extends Timestamped {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String userId;
+    private String userId; //아이디
 
     @Column(nullable = false)
-    private String nickname;
+    private String nickname; //별명
 
     @Column(nullable = false)
-    private String username;
+    private String username; //사용자의 이룸
 
     @Column(nullable = false)
     private String password;
@@ -62,5 +62,15 @@ public class User extends Timestamped {
         this.refreshToken = refreshToken;
     }
 
-
+    public void checkPassword(String password) {
+        if (!this.password.equals(password)) {
+            throw new IllegalArgumentException("패스워드가 다릅니다.");
+        }
+    }
+    public void updateProfile(String nickname, String password, String email, String content){
+        this.nickname = nickname;
+        this.password = password;
+        this.email = email;
+        this.content = content;
+    }
 }

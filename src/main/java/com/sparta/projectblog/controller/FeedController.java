@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/feeds")
@@ -24,12 +26,18 @@ public class FeedController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+
+    @GetMapping("")
+    public ResponseEntity<List<Feed>> getFeeds() {
+        return ResponseEntity.ok().body(feedService.allFeed());
     }
 
     @GetMapping("/{id}")
-    public Feed feeds(@PathVariable Long id) {
-        return feedService.readFeed(id);
+    public ResponseEntity<Feed> feeds(@PathVariable Long id) {
+        return ResponseEntity.ok().body(feedService.readFeed(id));
     }
 
     @PatchMapping("/{id}")
