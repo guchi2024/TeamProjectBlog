@@ -7,6 +7,9 @@ import com.sparta.projectblog.dto.UserRequestDto;
 import com.sparta.projectblog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -57,6 +60,14 @@ public class UserController {
     public String updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
         return userService.updateUser(id, requestDto);
     }
+
+    @PostMapping("/logout")
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecurityContextHolder.clearContext();
+        userService.deleteRefreshToken(authentication.getName());
+    }
+}
     @ResponseBody
     @GetMapping("")
     public UserResponse currentUserName(@AuthenticationPrincipal UserDetails userDetails) {

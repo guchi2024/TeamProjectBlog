@@ -30,6 +30,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public void deleteRefreshToken(String username) {
+        userRepository.deleteRefreshTokenByUsername(username);
+    }
+
 
 
     public void signup(SignupRequestDto requestDto) {
@@ -53,7 +57,7 @@ public class UserService {
         }
 
         // 회원 중복 확인
-        Optional<User> checkUserId = userRepository.findByUsername(userId);
+        Optional<User> checkUserId = userRepository.findByUserId(userId);
         if (checkUserId.isPresent()) {
             throw new IllegalArgumentException("중복된 아이디 입니다.");
         }
@@ -86,10 +90,12 @@ public class UserService {
                 return "비밀번호가 일치하지 않습니다.";
             }
             if ("정상".equals(user.getStatus())) {
+                user.setRefreshToken(null);
                 user.setStatus("탈퇴");
             } else if ("탈퇴".equals(user.getStatus())) {
                 throw new IllegalArgumentException("이미 탈퇴처리 된 사용자입니다.");
             }
+            userRepository.save(user);
         }
         return "정상 탈퇴 처리되었습니다.";
     }
