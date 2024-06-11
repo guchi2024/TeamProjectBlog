@@ -5,6 +5,8 @@ import com.sparta.projectblog.dto.UserRequestDto;
 import com.sparta.projectblog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -50,5 +52,12 @@ public class UserController {
     @PutMapping("/user/change-status/{id}")
     public String updateUser(@PathVariable Long id, @RequestBody UserRequestDto requestDto) {
         return userService.updateUser(id, requestDto);
+    }
+
+    @PostMapping("/logout")
+    public void logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecurityContextHolder.clearContext();
+        userService.deleteRefreshToken(authentication.getName());
     }
 }
