@@ -36,8 +36,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = obtainUsername(req);
         String password = obtainPassword(req);
 
-        System.out.println(username);
-
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
 
@@ -48,6 +46,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+        /*String username = customUserDetails.getUsername();*/
         String username = customUserDetails.getUsername();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -60,6 +59,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String refreshToken = jwtUtil.createRefreshToken(username, role, 2L * 7 * 24 * 60 * 60 * 1000L);
 
         Optional<User> optionalUser = userRepository.findByUsername(username);
+
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.updateRefreshToken(refreshToken);
@@ -78,5 +78,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         response.setStatus(401);
     }
+
 
 }
